@@ -93,6 +93,8 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\WPFAssemblyInfo.cs" />
+    <Compile Include="Services\IServiceManager.cs" />
+    <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -111,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model" />
+    <Folder Include="Services" />
     <Folder Include="Views" />
     <Folder Include="ViewModels" />
   </ItemGroup>
