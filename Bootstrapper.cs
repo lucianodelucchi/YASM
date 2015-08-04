@@ -2,13 +2,11 @@
 using System.Windows;
 using Microsoft.Practices.Unity;
 using Prism.Unity;
+using YASM.Services;
 using YASM.Views;
 
 namespace YASM
 {
-	/// <summary>
-	/// Description of Bootstrapper.
-	/// </summary>
 	public class Bootstrapper : UnityBootstrapper
 	{
 		#region implemented abstract members of Bootstrapper
@@ -27,7 +25,7 @@ namespace YASM
 		{
 			base.ConfigureContainer();
 			
-			Container.RegisterType<>();
+			Container.RegisterType<IServiceManager, ServiceManager>();
 		}
 	}
 }
