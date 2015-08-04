@@ -25,7 +25,8 @@ namespace YASM
 		{
 			base.ConfigureContainer();
 			
-			Container.RegisterType<IServiceManager, ServiceManager>();
+			var sm = new ServiceManager();
+			Container.RegisterInstance<IServiceManager>(sm);
 		}
 	}
 }
