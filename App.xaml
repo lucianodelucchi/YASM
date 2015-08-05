@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	>
 	<Application.Resources>
-		 
+	 	<BooleanToVisibilityConverter x:Key="visibilityConverter" />
+		<Style x:Key="Unused" /> <!--added because of a bug see http://www.bengribaudo.com/blog/2010/08/19/106/bug-single-application-resources-entry-ignored-->
 	</Application.Resources>
 </Application>
