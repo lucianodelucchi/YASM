@@ -5,18 +5,20 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
 	Title="YASM.Views" Height="300" Width="300" >
 	<StackPanel>
-		<ListBox MaxHeight="100" 
+		<ListBox MaxHeight="500" 
 			ItemsSource="{Binding Services}"
 			SelectedItem="{Binding SelectedService, Mode=TwoWay}">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel>
 						<TextBlock Text="{Binding ServiceName}" />
+						<TextBlock Text="{Binding Status}" />
 					</StackPanel>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
 	<Button VerticalAlignment="Center" Width="75" Margin="10"
 	        Content="Test" Command="{Binding TestCommand}"/>
+	<TextBlock Text="Loading" Visibility="{Binding IsLoading, Converter={StaticResource visibilityConverter}}"/>
 	</StackPanel>
 </Window>
