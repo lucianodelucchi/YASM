@@ -17,26 +17,49 @@ namespace YASM.ViewModels
 		
 		public ICommand TestCommand { get; set; }
 		
-		public IService SelectedService { get; set; }
+		IService _selectedService;
+		public IService SelectedService 
+		{ 
+			get{ return _selectedService; }
+			set{ SetProperty(ref _selectedService, value); }
+		}
+		
+		bool _isLoading = false;
+		public bool IsLoading
+		{
+			get{ return _isLoading; }
+			set{ SetProperty(ref _isLoading, value); }
+		}
 		
 		public MainWindowViewModel(IServiceManager serviceManager)
 		{
-			TestCommand = new DelegateCommand(Execute, CanExecute);
+			TestCommand = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => SelectedService);
 			
 			Services = new ObservableCollection<IService>();
 			
 			this._serviceManager = serviceManager;
-			this._serviceManager.GetServices().ObserveOnDispatcher().Subscribe(Services.Add);
+			
+			this.LoadServices();
+		}
+		
+		
+		void LoadServices()
+		{
+			IsLoading = true;
+			_serviceManager.GetServices().ObserveOnDispatcher()
+				.Subscribe(
+					Services.Add,
+					()=> IsLoading = false
+			);
 		}
 		
 		void Execute()
 		{
-			var d = SelectedService.Description;
 		}
 		
 		bool CanExecute()
 		{
-			return true;
+			return SelectedService != null;
 		}
 	}
 }
