@@ -4,7 +4,7 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
 	Title="YASM.Views" Height="300" Width="300" >
-	<StackPanel>
+	<StackPanel Margin="10">
 		<DataGrid ItemsSource="{Binding Services}" AutoGenerateColumns="False" 
 		          CanUserSortColumns="True" CanUserResizeColumns="True"
 		          CanUserResizeRows="False" AlternatingRowBackground="Gainsboro"
@@ -12,12 +12,13 @@
 		          IsReadOnly="True" MaxHeight="500"
 			>
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Name" Binding="{Binding ServiceName}" />
+				<DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" />
 				<DataGridTextColumn Header="Status" Binding="{Binding Status}" />
 			</DataGrid.Columns>
 		</DataGrid>
 	<Button VerticalAlignment="Center" Width="75" Margin="10"
 	        Content="Test" Command="{Binding TestCommand}"/>
 	<TextBlock Text="Loading" Visibility="{Binding IsLoading, Converter={StaticResource visibilityConverter}}"/>
+	<TextBlock DataContext="{Binding SelectedService}" Text="{Binding Description}" TextWrapping="Wrap"/>
 	</StackPanel>
 </Window>
