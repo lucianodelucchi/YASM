@@ -13,12 +13,23 @@
 			>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" />
-				<DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+				<DataGridTextColumn Header="Status" Binding="{Binding Status.Result}" />
 			</DataGrid.Columns>
 		</DataGrid>
 	<Button VerticalAlignment="Center" Width="75" Margin="10"
 	        Content="Test" Command="{Binding TestCommand}"/>
 	<TextBlock Text="Loading" Visibility="{Binding IsLoading, Converter={StaticResource visibilityConverter}}"/>
 	<TextBlock DataContext="{Binding SelectedService}" Text="{Binding Description}" TextWrapping="Wrap"/>
+	 <!-- Busy indicator -->
+    <Label Content="Loading..." Visibility="{Binding SelectedService.Status.IsNotCompleted,
+      Converter={StaticResource visibilityConverter}}"/>
+    <!-- Results -->
+    <Label Content="{Binding SelectedService.Status.Result}" Visibility="{Binding
+      SelectedService.Status.IsSuccessfullyCompleted,
+      Converter={StaticResource visibilityConverter}}"/>
+    <!-- Error details -->
+    <Label Content="{Binding SelectedService.Status.ErrorMessage}" Background="Red"
+      Visibility="{Binding SelectedService.Status.IsFaulted,
+      Converter={StaticResource visibilityConverter}}"/>
 	</StackPanel>
 </Window>

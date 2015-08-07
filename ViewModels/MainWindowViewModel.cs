@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using SM.Model;
+using YASM.Model;
 using YASM.Services;
 
 namespace YASM.ViewModels
@@ -13,12 +14,12 @@ namespace YASM.ViewModels
 	{
 		readonly IServiceManager _serviceManager;
 		
-		public ObservableCollection<IService> Services { get; private set; }
+		public ObservableCollection<NotifyService> Services { get; private set; }
 		
 		public ICommand TestCommand { get; set; }
 		
-		IService _selectedService;
-		public IService SelectedService 
+		NotifyService _selectedService;
+		public NotifyService SelectedService 
 		{ 
 			get{ return _selectedService; }
 			set{ SetProperty(ref _selectedService, value); }
@@ -35,7 +36,7 @@ namespace YASM.ViewModels
 		{
 			TestCommand = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => SelectedService);
 			
-			Services = new ObservableCollection<IService>();
+			Services = new ObservableCollection<NotifyService>();
 			
 			this._serviceManager = serviceManager;
 			
@@ -55,6 +56,7 @@ namespace YASM.ViewModels
 		
 		void Execute()
 		{
+			SelectedService.Stop();
 		}
 		
 		bool CanExecute()

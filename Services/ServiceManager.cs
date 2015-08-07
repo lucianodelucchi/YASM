@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reactive.Linq;
 using SM.Model;
+using YASM.Model;
 
 namespace YASM.Services
 {
@@ -11,9 +13,9 @@ namespace YASM.Services
 
 		#region IServiceManager implementation
 
-		public IObservable<IService> GetServices()
+		public IObservable<NotifyService> GetServices()
 		{
-			return SM.ServiceManager.GetServices();
+			return SM.ServiceManager.GetServices().Select(NotifyService.FromService);
 		}
 
 		#endregion
