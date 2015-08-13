@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
-using System.Windows.Input;
-using Prism.Commands;
 using Prism.Mvvm;
-using SM.Model;
 using YASM.Model;
 using YASM.Services;
+using YASM.Utils;
+using System.Threading.Tasks;
 
 namespace YASM.ViewModels
 {
-	public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase
 	{
 		readonly IServiceManager _serviceManager;
 		
-		public ObservableCollection<NotifyService> Services { get; private set; }
-		
-		public ICommand TestCommand { get; set; }
-		
-		NotifyService _selectedService;
+		public ObservableCollection<NotifyService> Services { get; } = new ObservableCollection<NotifyService>();
+
+        public IAsyncCommand StopServiceCommand { get; }
+
+        public IAsyncCommand LoadServicesCommand { get; }
+
+        NotifyService _selectedService;
 		public NotifyService SelectedService 
 		{ 
 			get{ return _selectedService; }
@@ -34,34 +35,36 @@ namespace YASM.ViewModels
 		
 		public MainWindowViewModel(IServiceManager serviceManager)
 		{
-			TestCommand = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => SelectedService);
-			
-			Services = new ObservableCollection<NotifyService>();
-			
 			this._serviceManager = serviceManager;
-			
-			this.LoadServices();
-		}
-		
-		
-		void LoadServices()
+
+            LoadServicesCommand = new AsyncCommand(s => LoadServicesAsync());
+            LoadServicesCommand.Execute(null);
+
+            StopServiceCommand = new AsyncCommand(s => StopServiceCommandAsync(), CanExecuteStop);
+        }
+
+        Task<object> LoadServicesAsync()
 		{
-			IsLoading = true;
-			_serviceManager.GetServices().ObserveOnDispatcher()
-				.Subscribe(
-					Services.Add,
-					()=> IsLoading = false
-			);
-		}
+            TaskCompletionSource<object> finalTask = new TaskCompletionSource<object>();
+
+            _serviceManager.GetServices().ObserveOnDispatcher()
+                .Subscribe(
+                    Services.Add,
+                    exception => finalTask.TrySetException(exception),
+                    () => finalTask.SetResult(null) 
+                );
+
+            return finalTask.Task;
+        }
+
+        Task StopServiceCommandAsync()
+        {
+            return SelectedService.Stop();            
+        }
 		
-		void Execute()
+		bool CanExecuteStop(object o)
 		{
-			SelectedService.Stop();
-		}
-		
-		bool CanExecute()
-		{
-			return SelectedService != null;
+			return SelectedService != null && SelectedService.Status != System.ServiceProcess.ServiceControllerStatus.Stopped;
 		}
 	}
 }

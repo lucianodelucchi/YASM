@@ -1,5 +1,4 @@
-﻿using System;
-using System.ServiceProcess;
+﻿using System.ServiceProcess;
 using System.Threading.Tasks;
 using Prism.Mvvm;
 using SM.Model;
@@ -7,7 +6,7 @@ using YASM.Utils;
 
 namespace YASM.Model
 {
-	public class NotifyService : BindableBase
+    public class NotifyService : BindableBase
 	{
 		IService _service;
 		
@@ -53,15 +52,23 @@ namespace YASM.Model
 			}
 		}
 
-		public INotifyTaskCompletion<ServiceControllerStatus> Status 
+        public ServiceControllerStatus Status
+        {
+            get
+            {
+                return _service.Status;
+            }
+        }
+
+        public NotifyTask<ServiceControllerStatus> StatusAsync 
 		{
 			get 
 			{
-				return NotifyTaskCompletion.Create<ServiceControllerStatus>(GetStatus());
+				return NotifyTask.Create<ServiceControllerStatus>(GetStatusAsync());
 			}
 		}		
 		
-		async Task<ServiceControllerStatus> GetStatus()
+		async Task<ServiceControllerStatus> GetStatusAsync()
 		{
 			await _service.Refresh();
 			return await _service.GetStatus();
@@ -86,7 +93,7 @@ namespace YASM.Model
 					break;
 			}
 			
-			OnPropertyChanged(() => Status);
+			OnPropertyChanged(() => StatusAsync);
 			return t;
 		}
 		
