@@ -53,11 +53,11 @@ namespace YASM.Model
 			}
 		}
 
-		public NotifyTaskCompletion<ServiceControllerStatus> Status 
+		public INotifyTaskCompletion<ServiceControllerStatus> Status 
 		{
 			get 
 			{
-				return new NotifyTaskCompletion<ServiceControllerStatus>(GetStatus());
+				return NotifyTaskCompletion.Create<ServiceControllerStatus>(GetStatus());
 			}
 		}		
 		
