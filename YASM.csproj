@@ -112,7 +112,9 @@
     <Compile Include="Properties\WPFAssemblyInfo.cs" />
     <Compile Include="Services\IServiceManager.cs" />
     <Compile Include="Services\ServiceManager.cs" />
-    <Compile Include="Utils\NotifyTaskCompletion.cs" />
+    <Compile Include="Utils\AsyncCommand.cs" />
+    <Compile Include="Utils\NotifyTask.cs" />
+    <Compile Include="Utils\NullToVisibilityConverter.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -130,13 +132,7 @@
       <Name>SM</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model" />
-    <Folder Include="Utils" />
-    <Folder Include="Services" />
-    <Folder Include="Views" />
-    <Folder Include="ViewModels" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\MainWindow.xaml" />
   </ItemGroup>
