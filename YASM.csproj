@@ -113,7 +113,8 @@
     <Compile Include="Services\IServiceManager.cs" />
     <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Utils\AsyncCommand.cs" />
-    <Compile Include="Utils\NotifyTaskCompletion.cs" />
+    <Compile Include="Utils\NotifyTask.cs" />
+    <Compile Include="Utils\NullToVisibilityConverter.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
