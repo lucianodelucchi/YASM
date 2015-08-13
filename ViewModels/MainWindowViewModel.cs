@@ -19,6 +19,14 @@ namespace YASM.ViewModels
 
         public IAsyncCommand LoadServicesCommand { get; }
 
+        IAsyncCommand _activeAsyncCommand;
+
+        public IAsyncCommand ActiveAsyncCommand
+        {
+            get { return _activeAsyncCommand; }
+            set { SetProperty(ref _activeAsyncCommand, value); }
+        }
+
         NotifyService _selectedService;
 		public NotifyService SelectedService 
 		{ 
@@ -45,6 +53,8 @@ namespace YASM.ViewModels
 
         Task<object> LoadServicesAsync()
 		{
+            ActiveAsyncCommand = LoadServicesCommand;
+
             TaskCompletionSource<object> finalTask = new TaskCompletionSource<object>();
 
             _serviceManager.GetServices().ObserveOnDispatcher()
@@ -59,6 +69,8 @@ namespace YASM.ViewModels
 
         Task StopServiceCommandAsync()
         {
+            ActiveAsyncCommand = StopServiceCommand;
+
             return SelectedService.Stop();            
         }
 		
