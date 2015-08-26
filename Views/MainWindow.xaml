@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:yasm="clr-namespace:YASM.Utils"
+    xmlns:sp="clr-namespace:System.ServiceProcess;assembly=System.ServiceProcess"
     prism:ViewModelLocator.AutoWireViewModel="True"
 	Title="YASM.Views" Height="650" Width="500" >
     <Window.Resources>
@@ -18,13 +19,34 @@
         </StatusBar>
         <DataGrid ItemsSource="{Binding Services}" AutoGenerateColumns="False" 
 		          CanUserSortColumns="True" CanUserResizeColumns="True"
-		          CanUserResizeRows="False" AlternatingRowBackground="Gainsboro"
-		          AlternationCount="2" SelectedItem="{Binding SelectedService, Mode=TwoWay}" 
+		          CanUserResizeRows="False" SelectedItem="{Binding SelectedService, Mode=TwoWay}" 
 		          IsReadOnly="True" MaxHeight="500" DockPanel.Dock="Top"
 			>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding StatusAsync.Result}" Value="{x:Static sp:ServiceControllerStatus.Stopped}">
+                            <Setter Property="TextElement.Foreground" Value="Red"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell" >
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Background.Color" From="Green" To="Red" Duration="0:0:1" FillBehavior="Stop"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" />
-                <DataGridTextColumn Header="Status" Binding="{Binding StatusAsync.Result}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding StatusAsync.Result, NotifyOnTargetUpdated=True}" />
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel>
